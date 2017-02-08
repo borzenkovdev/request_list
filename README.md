@@ -5,11 +5,6 @@ The results are displayed in a tabular format. Answered question has green backg
 I made design very similar to original site. (http://stackoverflow.com)
 I chose yii2 framework because using this tool you can develop saclebale applications.
 
-
-DIRECTORY STRUCTURE
--------------------
-
-
 DIRECTORY STRUCTURE
 -------------------
 

@@ -49,7 +49,7 @@ class SiteController extends Controller
         $provider = new ArrayDataProvider([
             'allModels' => $questionsData,
             'pagination' => [
-                'pageSize' => 40,
+                'pageSize' => 15,
             ],
             'sort' => [
                 'attributes' => ['creation_date'],
