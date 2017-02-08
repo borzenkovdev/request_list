@@ -3,7 +3,7 @@ Test task
 This site helps to search questions and answers on http://stackoverflow.com, based on the Api (https://api.stackexchange.com/)
 The results are displayed in a tabular format. Answered question has green background color.
 I made design very similar to original site. (http://stackoverflow.com)
-I chose yii2 framework because using this tool you can develop saclebale applications.
+I chose yii2 framework because using this tool you can develop scalebale applications.
 
 DIRECTORY STRUCTURE
 -------------------
