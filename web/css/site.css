@@ -103,6 +103,9 @@ a.desc:after {
         width: 100%;
         padding: 10px 15px;
     }
+    .so-logo {
+        display: none!important;
+    }
 }
 
 .nav > li > form > button.logout:focus,
@@ -112,4 +115,48 @@ a.desc:after {
 
 .nav > li > form > button.logout:focus {
     outline: none;
+}
+.questions-list {
+    margin-top: 40px;
+}
+.table-min {
+    margin-bottom: 0!important;
+}
+.table-min td, .table-min th {
+    color: #848d95!important;;
+    padding: 5px!important;
+    border-top: none!important;
+    text-align: center!important;
+}
+.table-min td {
+    font-size: 12px!important;
+}
+.table-min th {
+    font-size: 13px!important;
+}
+tr.answered {
+    border-left: 4px solid green;
+}
+tr.answered td, tr.answered .table-min td, tr.answered .table-min th {
+    background-color: #dbf7db;
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #FFFFFF!important;
+}
+.form-control.main-page {
+    font-size: 21px;
+    height: 60px;
+}
+
+.so-logo {
+    width: 400px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+.mainpage-centralform {
+    text-align: center;
+}
+.mainpage-centralform h2 {
+    margin-bottom: 15px;
 }

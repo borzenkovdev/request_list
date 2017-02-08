@@ -6,8 +6,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use yii\data\ArrayDataProvider;
 
 class SiteController extends Controller
 {
@@ -64,53 +63,77 @@ class SiteController extends Controller
     }
 
     /**
-     * Login action.
+     * Displays questions list.
      *
      * @return string
      */
-    public function actionLogin()
+    public function actionQuestions()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+        $qusetionsData = [];
+
+        $query = Yii::$app->request->get('query');
+
+        if (strlen($query) > 0) {
+            $session = Yii::$app->session;
+            if (! $session->isActive) {
+                $session->open();
+            }
+            $session->set('stackoverflow_query', $query);
+            $qusetionsData = $this->getQuestionsFromStackoverflow($query);
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-            'model' => $model,
+        $provider = new ArrayDataProvider([
+            'allModels' => $qusetionsData['items'],
+            'pagination' => [
+                'pageSize' => 12,
+            ],
+            'sort' => [
+                'attributes' => ['creation_date'],
+            ],
+        ]);
+
+        return $this->render('questions', [
+            'dataProvider' => $provider
         ]);
     }
 
     /**
-     * Logout action.
-     *
-     * @return string
+     * @param $query
+     * @return bool|mixed
      */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
+    private function getQuestionsFromStackoverflow($query) {
+        if(strlen($query) > 0 && $ch = curl_init() ) {
 
-        return $this->goHome();
-    }
+            $dataQuery = [
+                'order'=>'desc',
+                'sort'=>'creation',
+                'q'=> $query,
+                'site'=>'stackoverflow',
+            ];
 
-    /**
-     * Displays contact page.
-     *
-     * @return string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
+            $buildedQuery = http_build_query($dataQuery);
 
-            return $this->refresh();
+            $apiUrl = "https://api.stackexchange.com/2.2/search/advanced?{$buildedQuery}";
+
+            // set url
+            curl_setopt($ch, CURLOPT_URL, $apiUrl);
+
+            //return the transfer as a string
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+            curl_setopt($ch, CURLOPT_ENCODING ,"UTF-8");
+
+            // $output contains the output string
+            if (! $output = curl_exec($ch)) {
+                Yii::error('curl error:' . curl_error($ch));
+            }
+            // close curl resource to free up system resources
+            curl_close($ch);
+
+            return json_decode($output, true);
+        } else {
+            return false;
         }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
     }
 
     /**
