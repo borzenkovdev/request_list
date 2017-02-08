@@ -7,35 +7,10 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\data\ArrayDataProvider;
+use yii\base\ErrorException;
 
 class SiteController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * @inheritdoc
      */
@@ -44,11 +19,7 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+            ]
         ];
     }
 
@@ -69,23 +40,16 @@ class SiteController extends Controller
      */
     public function actionQuestions()
     {
-        $qusetionsData = [];
-
         $query = Yii::$app->request->get('query');
-
         if (strlen($query) > 0) {
-            $session = Yii::$app->session;
-            if (! $session->isActive) {
-                $session->open();
-            }
-            $session->set('stackoverflow_query', $query);
-            $qusetionsData = $this->getQuestionsFromStackoverflow($query);
+            Yii::$app->session->set('stackoverflow_query', $query);
+            $questionsData = $this->getQuestionsFromStackoverflow($query);
         }
 
         $provider = new ArrayDataProvider([
-            'allModels' => $qusetionsData['items'],
+            'allModels' => $questionsData,
             'pagination' => [
-                'pageSize' => 12,
+                'pageSize' => 40,
             ],
             'sort' => [
                 'attributes' => ['creation_date'],
@@ -93,46 +57,55 @@ class SiteController extends Controller
         ]);
 
         return $this->render('questions', [
-            'dataProvider' => $provider
+            'dataProvider' => $provider,
+            'findedQestitonsQuantity' => count($questionsData)
         ]);
     }
 
     /**
      * @param $query
-     * @return bool|mixed
+     * @return array|string
      */
     private function getQuestionsFromStackoverflow($query) {
-        if(strlen($query) > 0 && $ch = curl_init() ) {
-
+        if(strlen($query) > 0 ) {
             $dataQuery = [
                 'order'=>'desc',
                 'sort'=>'creation',
                 'q'=> $query,
                 'site'=>'stackoverflow',
             ];
-
             $buildedQuery = http_build_query($dataQuery);
-
             $apiUrl = "https://api.stackexchange.com/2.2/search/advanced?{$buildedQuery}";
 
-            // set url
+            $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $apiUrl);
-
-            //return the transfer as a string
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
             curl_setopt($ch, CURLOPT_ENCODING ,"UTF-8");
 
-            // $output contains the output string
             if (! $output = curl_exec($ch)) {
                 Yii::error('curl error:' . curl_error($ch));
+                curl_close($ch);
+                return $this->render(
+                    'error',
+                    ['message' => 'The above error occurred while the Web server was processing your request.']
+                );
             }
             // close curl resource to free up system resources
             curl_close($ch);
-
-            return json_decode($output, true);
+            $result = json_decode($output, true);
+            if ($result['quota_remaining'] == 0 && count($result['items']) == 0) {
+                return $this->render(
+                    'error',
+                    ['message' => 'Reached stackexchange Api limit']
+                );
+            }
+            if ($result && isset($result['items'])) {
+                return $result['items'];
+            } else {
+                return [];
+            }
         } else {
-            return false;
+            return [];
         }
     }
 

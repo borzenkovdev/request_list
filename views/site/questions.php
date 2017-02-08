@@ -24,7 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- /.row -->
 
     <div class="questions-list">
-        <? Pjax::begin(['id' => 'countries']); ?>
+        <h3><?=$findedQestitonsQuantity;?> results</h3>
+<!--        --><?// Pjax::begin(['id' => 'countries']); ?>
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'layout' => "{items}\n{pager}",
@@ -81,6 +82,6 @@ $this->params['breadcrumbs'][] = $this->title;
             }
         ]);
         ?>
-        <? Pjax::end(); ?>
+<!--        --><?// Pjax::end(); ?>
     </div>
 </div>
