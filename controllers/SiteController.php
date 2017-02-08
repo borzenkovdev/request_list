@@ -96,7 +96,7 @@ class SiteController extends Controller
             if ($result['quota_remaining'] == 0 && count($result['items']) == 0) {
                 return $this->render(
                     'error',
-                    ['message' => 'Reached stackexchange Api limit']
+                    ['message' => 'Reached limit of requests']
                 );
             }
             if ($result && isset($result['items'])) {
