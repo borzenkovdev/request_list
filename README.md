@@ -1,5 +1,6 @@
 Application processing system   Система обработки заявок
-============================п
+============================
+-------------------
 There is a fixed set of users and 2 roles: manager and supervisor (each user has one role).
 The application passes a linear lifecycle: Created - In work - At checkout - Closed
 Any user can create an application. When creating, fill in: title, detailed description.
@@ -8,7 +9,7 @@ Close the task can only supervisor (any)
 All users can access the register of applications (columns: title, artist, creator, creation date, current status). For each column, filtering and sorting are available. Also for managers there is a "quick filter" - "My pending applications" (ie applications in the status In work or On the check, where the executor is the current manager)
 All users can view the application (fields: name, artist, creator, creation date, current status, detailed description, work result). Supervisors also have a log of status changes (who, when, and to what status the application was transferred)
 Supervisors can delete applications, and also edit the fields of the application: title, description, result of work (the result of work is only for the statuses On the Verification and Closed)
-
+-------------------
 Есть фиксированный набор пользователей и 2 роли: менеджер и супервайзер (у каждого юзера - одна роль).
 Заявка проходит линейный жизненный цикл: Создана - В работе - На проверке - Закрыта
 Любой пользователь может создать заявку. При создании заполняются: название, подробное описание.
