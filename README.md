@@ -21,7 +21,7 @@ DIRECTORY STRUCTURE
 -------------------
 
       assets/             contains assets definition
-      config/             contains application configurations
+      config/             contains application configurationsls
       controllers/        contains Web controller classes
       runtime/            contains files generated during runtime
       vendor/             contains dependent 3rd-party packages
