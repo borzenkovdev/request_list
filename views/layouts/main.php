@@ -33,12 +33,21 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
+    $user_items = [];
+    $user_items[] = ['label' => 'Заявки в работе', 'url' => '/request/inwork'];
+    $user_items[] = '<li class="divider"></li>';
+    $user_items[] = ['label' => 'Выход', 'url' => '/site/logout', 'linkOptions' => ['data-method' => 'post']];
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Questions', 'url' => ['/site/questions']],
-            ['label' => 'About', 'url' => ['/site/about']]
+        'items' => Yii::$app->user->isGuest ? [['label' => 'Вход', 'url' => ['/site/login']]] : [
+            ['label' => 'Главная', 'url' => ['/site/index']],
+            ['label' => 'Список заявок', 'url' => ['/request/index']],
+            [
+                'label' => Yii::$app->user->identity->login,
+                'items' => $user_items,
+            ]
         ],
     ]);
     NavBar::end();

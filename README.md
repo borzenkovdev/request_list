@@ -44,16 +44,26 @@ The minimum requirement by this project template that your Web server supports P
 INSTALLATION
 ------------
 
-### Install via Composer
+
+1.
+~~~
+php composer.phar install
+~~~
 
 If you do not have [Composer](http://getcomposer.org/), you may install it by following the instructions
 at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
 
-You can then install this project template using the following command:
+2.
+~~~
+php yii migrate --migrationPath=@yii/rbac/migrations
+~~~
 
+3.
 ~~~
-php composer.phar install
+php yii rbac/init
 ~~~
+
+
 
 You can then access the application through the following URL:
 ~~~

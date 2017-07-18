@@ -52,10 +52,6 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            if (isset($user->is_blocked) && $user->is_blocked) {
-                $this->addError($attribute, 'Доступ заблокирован. Обратитесь к администрации.');
-            }
-
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, 'Неверный логин или пароль.');
             }
@@ -82,35 +78,8 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            //$this->_user = User::find()->where(['email' => $this->username])->one();
-            if ($this->isEmail()) {
-                $this->_user = User::find()->where(['email' => $this->username])->one();
-            } elseif ($this->isPhone()) {
-                $this->_user = User::find()->where(['phone' => User::getStrongNumber($this->username)])->one();
-            } else {
-                $this->_user = User::find()->where(['login' => $this->username])->one();
-            }
+            $this->_user = User::find()->where(['login' => $this->username])->one();
         }
-
         return $this->_user;
-    }
-
-    private function isPhone()
-    {
-        $number = preg_replace("/\D/", "", $this->username);
-        if (strlen($number) > 9 && strlen($number) < 14) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function isEmail()
-    {
-        if (filter_var($this->username, FILTER_VALIDATE_EMAIL)) {
-            return true;
-        }
-
-        return false;
     }
 }
