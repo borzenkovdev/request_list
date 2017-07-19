@@ -9,7 +9,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1>Новая заявка</h1>
-
 <form method="post">
     <div class="form-group">
         <label for="request_name">Название</label>

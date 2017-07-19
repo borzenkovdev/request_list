@@ -4,6 +4,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use \yii\helpers\Url;
 
 $this->title = 'Список заявок';
 $this->params['breadcrumbs'][] = $this->title;
@@ -14,12 +15,21 @@ $this->params['breadcrumbs'][] = $this->title;
 <p>
     <?= Html::a('Новая заявка', ['create'], ['class' => 'btn btn-success']) ?>
 </p>
+    <?= Html::a('Мои незавершенные заявки', ['', 'show'=>'unfinished'], ['class' => 'link']) ?>
+</p>
+
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
+//    'filterModel' => $searchModel,
     'columns' => [
         'id',
-        'name',
-        'statusformatted',
+        'name' => [
+            'attribute' => 'Название',
+            'header' => 'Название',
+            'content' => function($data) {
+                return  '<a href="' . Url::toRoute(['view', 'id' => $data->id]). '">'.$data->name.'</a>';
+            }
+        ],
         'workManager' => [
             'attribute' => 'Исполнитель',
             'header' => 'Исполнитель',
@@ -27,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'style' => 'vertical-align: top'
             ],
             'content' => function($data) {
-                return $data->workManager->login;
+                return $data->workManagerFormatted;
             }
         ],
         'creator' => [
@@ -37,21 +47,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'style' => 'vertical-align: top'
             ],
             'content' => function($data) {
-                return $data->creator->login;
+                return $data->creatorFormatted;
             }
         ],
         'created_at',
-//        'actions' => [
-//            'attribute' => '',
-//            'header' => '',
-//            'contentOptions' => [
-//                'style' => 'vertical-align: top'
-//            ],
-//            'content' => function($data) {
-//                return $data->creator->login;
-//
-//            }
-//        ],
-        ['class' => 'yii\grid\ActionColumn'],
+        'statusformatted',
+        'actions' => [
+            'contentOptions' => [
+                'style' => 'text-align: center'
+            ],
+            'attribute' => '',
+            'header' => '',
+            'content' => function($data) {
+                return $data->buttons;
+            }
+        ]
     ],
 ]); ?>

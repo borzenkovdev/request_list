@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use \yii\helpers\Url;
+use app\models\User;
 
 /**
  * This is the model class for table "request".
@@ -92,6 +94,24 @@ class Request extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'worked_by']);
     }
 
+    public function getWorkManagerFormatted()
+    {
+        if ($this->workManager) {
+            return $this->workManager->surname . ' ' . $this->workManager->name . ' ' . $this->workManager->middle_name;
+        } else {
+            return 'Не задан';
+        }
+    }
+
+    public function getCreatorFormatted()
+    {
+        if ($this->creator) {
+            return $this->creator->surname . ' ' . $this->creator->name . ' ' . $this->creator->middle_name;
+        } else {
+            return 'Не задан';
+        }
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -112,6 +132,25 @@ class Request extends \yii\db\ActiveRecord
                 break;
             default:
                 return 'Статус не задан';
+        }
+    }
+
+    public function getButtons()
+    {
+        if (Yii::$app->user->identity->getRole() == User::ROLE_USER && $this->status == Request::STATUS_NEW) {
+            return  '<a href="' . Url::toRoute(['getwork', 'id' => $this->id]). '">В работу</a>';
+        } elseif (
+            Yii::$app->user->identity->getRole() == User::ROLE_USER &&
+            $this->status == Request::STATUS_INWORK &&
+            $this->worked_by == Yii::$app->user->identity->getId()
+        ) {
+            return  '<a href="' . Url::toRoute(['sendtoreview', 'id' => $this->id]). '">Отдать на проверку</a>';
+        } elseif (Yii::$app->user->identity->getRole() == User::ROLE_ADMIN) {
+            return
+                '<a href="' . Url::toRoute(['update', 'id' => $this->id]). '"><span class="glyphicon glyphicon-pencil"></span></a>'.
+                '<a href="' . Url::toRoute(['delete', 'id' => $this->id]). '"><span class="glyphicon glyphicon-trash"></span></a>';
+        } else {
+            return '<a href="' . Url::toRoute(['view', 'id' => $this->id]). '"><span class="glyphicon glyphicon-eye-open"></span></a>';
         }
     }
 }

@@ -40,10 +40,28 @@ class RequestHistory extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => 'Ид',
             'request_id' => 'Request ID',
-            'description' => 'Description',
-            'created_at' => 'Created At',
+            'description' => 'Описание',
+            'created_at' => 'Дата изменения',
+            'managerFormatted' => 'Кто поменял статус'
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getManager()
+    {
+        return $this->hasOne(User::className(), ['id' => 'worked_by']);
+    }
+
+    public function getManagerFormatted()
+    {
+        if ($this->manager) {
+            return $this->manager->surname . ' ' . $this->manager->name . ' ' . $this->manager->middle_name;
+        } else {
+            return 'Не задан';
+        }
     }
 }

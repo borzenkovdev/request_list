@@ -7,6 +7,8 @@ use app\components\Controller;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
 use app\models\Request;
+use app\models\RequestSearch;
+use app\models\RequestHistory;
 
 class RequestController extends Controller
 {
@@ -23,8 +25,13 @@ class RequestController extends Controller
 
     public function actionView($id)
     {
+        $dataProvider = new ActiveDataProvider([
+            'query' => RequestHistory::find()->where(['request_id' => $id]),
+        ]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -33,39 +40,82 @@ class RequestController extends Controller
         $model = $this->findModel($id);
         $model->status = Request::STATUS_INWORK;
         $model->worked_by = Yii::$app->user->identity->getId();
-        $model->save();
+        if ($model->save()) {
+            $modelHistory = new RequestHistory();
+            $modelHistory->request_id = $id;
+            $modelHistory->changed_by = Yii::$app->user->identity->getId();
+            $modelHistory->description = 'Заявка переведена в статус "В работе"';
+            $modelHistory->save();
+            //todo уведомление
+            return $this->redirect(['index']);
+        }
+    }
+
+    public function actionSendtoreview($id)
+    {
+        $model = $this->findModel($id);
+        if (Yii::$app->request->post() && $model->load(Yii::$app->request->post())) {
+            $model->status = Request::STATUS_INREVIEW;
+            if ( $model->update()) {
+                $modelHistory = new RequestHistory();
+                $modelHistory->request_id = $id;
+                $modelHistory->changed_by = Yii::$app->user->identity->getId();
+                $modelHistory->description = 'Заявка переведена в статус "На проверке"';
+                $modelHistory->save();
+                //todo уведомление
+                return $this->redirect(['index']);
+            }
+        }
+
+        return $this->render('sendtoreview');
     }
 
     public function actionClose($id)
     {
         $model = $this->findModel($id);
         $model->status = Request::STATUS_CLOSED;
-        $model->save();
+        if ($model->update()) {
+            $modelHistory = new RequestHistory();
+            $modelHistory->request_id = $id;
+            $modelHistory->changed_by = Yii::$app->user->identity->getId();
+            $modelHistory->description = 'Заявка переведена в статус "Закрыта"';
+            $modelHistory->save();
+            //todo уведомление
+            return $this->redirect('index');
+        }
     }
 
     public function actionCreate()
     {
         $model = new Request();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //todo уведомление
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        //todo вставить уведомление что успешно удалено
+        //todo уведомление
         return $this->redirect(['index']);
     }
 
-    public function actionUpdate()
+    public function actionUpdate($id)
     {
-        return $this->render('index');
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //todo уведомление
+            return $this->redirect(['update', 'id' => $model->id]);
+        }
+        return $this->render('update', [
+            'model' => $this->findModel($id),
+        ]);
     }
 
     /**

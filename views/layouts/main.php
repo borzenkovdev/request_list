@@ -35,8 +35,6 @@ AppAsset::register($this);
     ]);
 
     $user_items = [];
-    $user_items[] = ['label' => 'Заявки в работе', 'url' => '/request/inwork'];
-    $user_items[] = '<li class="divider"></li>';
     $user_items[] = ['label' => 'Выход', 'url' => '/site/logout', 'linkOptions' => ['data-method' => 'post']];
 
     echo Nav::widget([
@@ -45,7 +43,7 @@ AppAsset::register($this);
             ['label' => 'Главная', 'url' => ['/site/index']],
             ['label' => 'Список заявок', 'url' => ['/request/index']],
             [
-                'label' => Yii::$app->user->identity->login,
+                'label' => Yii::$app->user->identity->nameFormatted,
                 'items' => $user_items,
             ]
         ],

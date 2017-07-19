@@ -113,6 +113,11 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->id;
     }
 
+    public function getNameFormatted()
+    {
+        return $this->middle_name . ' ' . $this->name . ' ' . $this->surname;
+    }
+
     public function getRole()
     {
         return $this->role;
