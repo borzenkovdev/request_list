@@ -12,10 +12,8 @@ class Controller extends \yii\web\Controller
 {
     public function beforeAction($action)
     {
-        //fixme
-        return true;
         if (parent::beforeAction($action)) {
-            if (!Yii::$app->user->can($action->id)) {
+            if (!Yii::$app->user->can($this->route)) {
                 throw new ForbiddenHttpException('Access denied');
             } else {
                 return true;

@@ -7,7 +7,6 @@ use app\components\Controller;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
 use app\models\Request;
-use app\models\RequestSearch;
 use app\models\RequestHistory;
 
 class RequestController extends Controller
@@ -111,7 +110,7 @@ class RequestController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //todo уведомление
-            return $this->redirect(['update', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
         return $this->render('update', [
             'model' => $this->findModel($id),

@@ -135,10 +135,10 @@ class Request extends \yii\db\ActiveRecord
         }
     }
 
-    public function getButtons()
+    public function getButtonsTable()
     {
         if (Yii::$app->user->identity->getRole() == User::ROLE_USER && $this->status == Request::STATUS_NEW) {
-            return  '<a href="' . Url::toRoute(['getwork', 'id' => $this->id]). '">В работу</a>';
+            return  '<a  class="btn" href="' . Url::toRoute(['getwork', 'id' => $this->id] ). '">В работу</a>';
         } elseif (
             Yii::$app->user->identity->getRole() == User::ROLE_USER &&
             $this->status == Request::STATUS_INWORK &&
@@ -147,10 +147,28 @@ class Request extends \yii\db\ActiveRecord
             return  '<a href="' . Url::toRoute(['sendtoreview', 'id' => $this->id]). '">Отдать на проверку</a>';
         } elseif (Yii::$app->user->identity->getRole() == User::ROLE_ADMIN) {
             return
-                '<a href="' . Url::toRoute(['update', 'id' => $this->id]). '"><span class="glyphicon glyphicon-pencil"></span></a>'.
+                '<a href="' . Url::toRoute(['update', 'id' => $this->id]). '"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp;'.
                 '<a href="' . Url::toRoute(['delete', 'id' => $this->id]). '"><span class="glyphicon glyphicon-trash"></span></a>';
         } else {
             return '<a href="' . Url::toRoute(['view', 'id' => $this->id]). '"><span class="glyphicon glyphicon-eye-open"></span></a>';
+        }
+    }
+
+    public function getButtonsDetail()
+    {
+        if (Yii::$app->user->identity->getRole() == User::ROLE_USER && $this->status == Request::STATUS_NEW) {
+            return  '<a class="btn btn-primary" href="' . Url::toRoute(['getwork', 'id' => $this->id] ). '">В работу</a>';
+        } elseif (
+            Yii::$app->user->identity->getRole() == User::ROLE_USER &&
+            $this->status == Request::STATUS_INWORK &&
+            $this->worked_by == Yii::$app->user->identity->getId()
+        ) {
+            return  '<a class="btn btn-success" href="' . Url::toRoute(['sendtoreview', 'id' => $this->id]). '">Отдать на проверку</a>';
+        } elseif (Yii::$app->user->identity->getRole() == User::ROLE_ADMIN) {
+            return '<a class="btn btn-danger" href="' . Url::toRoute(['delete', 'id' => $this->id]). '">Удалить</a> &nbsp;'.
+            '<a class="btn btn-success" href="' . Url::toRoute(['update', 'id' => $this->id]). '">Редактировать</a>';
+        } elseif (Yii::$app->user->identity->getRole() == User::ROLE_ADMIN && $this->status == Request::STATUS_INREVIEW) {
+            return '<a class="btn btn-success" href="' . Url::toRoute(['close', 'id' => $this->id]). '">Закрыть</a>';
         }
     }
 }

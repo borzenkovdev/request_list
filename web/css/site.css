@@ -196,3 +196,7 @@ tr.answered td, tr.answered .table-min td, tr.answered .table-min th {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+#search_block {
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+}

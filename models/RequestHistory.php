@@ -53,7 +53,7 @@ class RequestHistory extends \yii\db\ActiveRecord
      */
     public function getManager()
     {
-        return $this->hasOne(User::className(), ['id' => 'worked_by']);
+        return $this->hasOne(User::className(), ['id' => 'changed_by']);
     }
 
     public function getManagerFormatted()
