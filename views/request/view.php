@@ -1,6 +1,7 @@
 <?php
 use \yii\helpers\Url;
 use yii\grid\GridView;
+use app\models\User;
 
 $this->title = 'Заявка № ' . $model->id;
 $this->params['breadcrumbs'][] = $this->title;
@@ -21,9 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <h4>Описание</h4>
 <p><?=$model->description;?></p>
 
-<?//if (Yii::$app->user->identity->getRole() == User::ROLE_ADMIN):?>
+<?if (Yii::$app->user->identity->getRole() == User::ROLE_ADMIN):?>
 <div>
-    <h4>Истрия изменения статусов</h4>
+    <h4>История изменения статусов</h4>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -33,7 +34,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 </div>
-<?//endif;?>
-
-
+<?endif;?>
 <p><?=$model->buttonsDetail;?></p>

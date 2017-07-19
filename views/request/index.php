@@ -7,6 +7,11 @@ use \yii\helpers\Url;
 $this->title = 'Список заявок';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<?php foreach(Yii::$app->session->getAllFlashes() as $type => $messages): ?>
+    <?php foreach($messages as $message): ?>
+        <div class="alert alert-<?= $type ?>" role="alert"><?= $message ?></div>
+    <?php endforeach ?>
+<?php endforeach ?>
 
 <h1>Список заявок</h1>
 <p>

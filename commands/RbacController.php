@@ -58,6 +58,8 @@ class RbacController extends Controller
             'request/index',
             'request/view',
             'request/create',
+            'request/getwork',
+            'request/sendtoreview',
         ], $this->guestPermissions);
     }
 
@@ -88,6 +90,8 @@ class RbacController extends Controller
         $this->createPermission('request/index');
         $this->createPermission('request/view');
         $this->createPermission('request/create');
+        $this->createPermission('request/getwork');
+        $this->createPermission('request/sendtoreview');
 
         // permission Admin
         $this->createPermission('request/update');

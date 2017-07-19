@@ -45,7 +45,7 @@ class RequestController extends Controller
             $modelHistory->changed_by = Yii::$app->user->identity->getId();
             $modelHistory->description = 'Заявка переведена в статус "В работе"';
             $modelHistory->save();
-            //todo уведомление
+            Yii::$app->session->addFlash('info', 'Заявка переведена в статус "В работе"');
             return $this->redirect(['index']);
         }
     }
@@ -61,7 +61,7 @@ class RequestController extends Controller
                 $modelHistory->changed_by = Yii::$app->user->identity->getId();
                 $modelHistory->description = 'Заявка переведена в статус "На проверке"';
                 $modelHistory->save();
-                //todo уведомление
+                Yii::$app->session->addFlash('info', 'Заявка передана на проверку');
                 return $this->redirect(['index']);
             }
         }
@@ -79,7 +79,7 @@ class RequestController extends Controller
             $modelHistory->changed_by = Yii::$app->user->identity->getId();
             $modelHistory->description = 'Заявка переведена в статус "Закрыта"';
             $modelHistory->save();
-            //todo уведомление
+            Yii::$app->session->addFlash('info', 'Заявка переведена в статус "Закрыта"');
             return $this->redirect('index');
         }
     }
@@ -88,7 +88,7 @@ class RequestController extends Controller
     {
         $model = new Request();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //todo уведомление
+            Yii::$app->session->addFlash('info', 'Заявка успешно создана!');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -109,7 +109,7 @@ class RequestController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //todo уведомление
+            Yii::$app->session->addFlash('info', 'Заявка успешно обновлена!');
             return $this->redirect(['index']);
         }
         return $this->render('update', [
