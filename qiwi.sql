@@ -47,20 +47,21 @@ CREATE TABLE IF NOT EXISTS `auth_item` (
 -- Дамп данных таблицы qiwi.auth_item: ~14 rows (приблизительно)
 /*!40000 ALTER TABLE `auth_item` DISABLE KEYS */;
 INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
-	('admin', 1, NULL, 'app\\components\\UserRoleRule', NULL, 1500502373, 1500502373),
-	('guest', 1, NULL, 'app\\components\\UserRoleRule', NULL, 1500502373, 1500502373),
-	('request/create', 2, NULL, NULL, NULL, 1500502373, 1500502373),
-	('request/delete', 2, NULL, NULL, NULL, 1500502373, 1500502373),
-	('request/getwork', 2, NULL, NULL, NULL, 1500502373, 1500502373),
-	('request/index', 2, NULL, NULL, NULL, 1500502373, 1500502373),
-	('request/sendtoreview', 2, NULL, NULL, NULL, 1500502373, 1500502373),
-	('request/update', 2, NULL, NULL, NULL, 1500502373, 1500502373),
-	('request/view', 2, NULL, NULL, NULL, 1500502373, 1500502373),
-	('site/error', 2, NULL, NULL, NULL, 1500502373, 1500502373),
-	('site/index', 2, NULL, NULL, NULL, 1500502373, 1500502373),
-	('site/login', 2, NULL, NULL, NULL, 1500502373, 1500502373),
-	('site/logout', 2, NULL, NULL, NULL, 1500502373, 1500502373),
-	('user', 1, NULL, 'app\\components\\UserRoleRule', NULL, 1500502373, 1500502373);
+	('admin', 1, NULL, 'app\\components\\UserRoleRule', NULL, 1500534387, 1500534387),
+	('guest', 1, NULL, 'app\\components\\UserRoleRule', NULL, 1500534387, 1500534387),
+	('request/close', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('request/create', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('request/delete', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('request/getwork', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('request/index', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('request/sendtoreview', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('request/update', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('request/view', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('site/error', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('site/index', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('site/login', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('site/logout', 2, NULL, NULL, NULL, 1500534387, 1500534387),
+	('user', 1, NULL, 'app\\components\\UserRoleRule', NULL, 1500534387, 1500534387);
 /*!40000 ALTER TABLE `auth_item` ENABLE KEYS */;
 
 
@@ -77,6 +78,7 @@ CREATE TABLE IF NOT EXISTS `auth_item_child` (
 -- Дамп данных таблицы qiwi.auth_item_child: ~24 rows (приблизительно)
 /*!40000 ALTER TABLE `auth_item_child` DISABLE KEYS */;
 INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
+	('admin', 'request/close'),
 	('admin', 'request/create'),
 	('user', 'request/create'),
 	('admin', 'request/delete'),
@@ -116,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `auth_rule` (
 -- Дамп данных таблицы qiwi.auth_rule: ~1 rows (приблизительно)
 /*!40000 ALTER TABLE `auth_rule` DISABLE KEYS */;
 INSERT INTO `auth_rule` (`name`, `data`, `created_at`, `updated_at`) VALUES
-	('app\\components\\UserRoleRule', _binary 0x4F3A32373A226170705C636F6D706F6E656E74735C55736572526F6C6552756C65223A333A7B733A343A226E616D65223B733A32373A226170705C636F6D706F6E656E74735C55736572526F6C6552756C65223B733A393A22637265617465644174223B693A313530303530323337333B733A393A22757064617465644174223B693A313530303530323337333B7D, 1500502373, 1500502373);
+	('app\\components\\UserRoleRule', _binary 0x4F3A32373A226170705C636F6D706F6E656E74735C55736572526F6C6552756C65223A333A7B733A343A226E616D65223B733A32373A226170705C636F6D706F6E656E74735C55736572526F6C6552756C65223B733A393A22637265617465644174223B693A313530303533343338373B733A393A22757064617465644174223B693A313530303533343338373B7D, 1500534387, 1500534387);
 /*!40000 ALTER TABLE `auth_rule` ENABLE KEYS */;
 
 
@@ -158,10 +160,13 @@ INSERT INTO `request` (`id`, `name`, `description`, `status`, `result`, `worked_
 	(10, 'test4', 'test4', 'inreview', 'ыфваываываыв', 4, 4, '2017-07-19 20:35:53'),
 	(11, 'test4', 'test4', 'new', NULL, NULL, 4, '2017-07-19 20:36:01'),
 	(12, 'sadfasd', 'fasdfsd', 'new', NULL, NULL, 4, '2017-07-19 20:40:19'),
-	(13, 'sadfsdf', 'asdfsd', 'new', NULL, NULL, 4, '2017-07-19 20:40:25'),
+	(13, 'sadfsdf', 'asdfsd', 'inreview', '', 4, 4, '2017-07-19 20:40:25'),
 	(14, 'sadfsdfsda', 'fsdafsdfsd', 'new', NULL, NULL, 4, '2017-07-19 20:40:36'),
 	(15, 'asdfsd', 'fsdfsdf', 'new', NULL, NULL, 4, '2017-07-19 20:40:45'),
-	(16, 'sadfasd', 'fsdfasdfsdf', 'inwork', NULL, 4, 4, '2017-07-19 20:40:51');
+	(16, 'sadfasd', 'fsdfasdfsdf', 'inreview', 'результат', 4, 4, '2017-07-19 20:40:51'),
+	(17, 'gfjhsfj', 'sfjs', 'new', NULL, NULL, 4, '2017-07-20 09:43:54'),
+	(18, 'fgh', 'sfhgjgfj', 'new', NULL, NULL, 4, '2017-07-20 09:47:35'),
+	(19, 'fdgaf', 'gdfgadfg', 'new', NULL, NULL, 4, '2017-07-20 09:49:47');
 /*!40000 ALTER TABLE `request` ENABLE KEYS */;
 
 
@@ -184,7 +189,10 @@ INSERT INTO `request_history` (`id`, `request_id`, `changed_by`, `description`, 
 	(4, 10, 4, 'Заявка переведена в статус "В работе"', '2017-07-20 01:13:21'),
 	(5, 8, 4, 'Заявка переведена в статус "На проверке"', '2017-07-20 01:15:55'),
 	(6, 10, 4, 'Заявка переведена в статус "На проверке"', '2017-07-20 01:16:05'),
-	(7, 16, 4, 'Заявка переведена в статус "В работе"', '2017-07-20 01:16:27');
+	(7, 16, 4, 'Заявка переведена в статус "В работе"', '2017-07-20 01:16:27'),
+	(8, 13, 4, 'Заявка переведена в статус "В работе"', '2017-07-20 09:54:28'),
+	(9, 13, 4, 'Заявка переведена в статус "На проверке"', '2017-07-20 09:54:35'),
+	(10, 16, 4, 'Заявка переведена в статус "На проверке"', '2017-07-20 09:59:57');
 /*!40000 ALTER TABLE `request_history` ENABLE KEYS */;
 
 
@@ -206,8 +214,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`id`, `login`, `password`, `name`, `surname`, `middle_name`, `role`, `salt`) VALUES
 	(3, 'manager1', '82902c42095c91510266bdd64a287d3f', 'Андрей', 'Попов', 'Алексеевич', 'user', '596d122b57'),
 	(4, 'manager2', '82902c42095c91510266bdd64a287d3f', 'Виктор', 'Семёнов', 'Андреевич', 'user', '596d122b57'),
-	(5, 'admin', '82902c42095c91510266bdd64a287d3f', 'Роман', 'Станиславович', 'Пермитин', 'admin', '596d122b57'),
-	(6, 'manager3', '82902c42095c91510266bdd64a287d3f', 'Сергей', 'Романович', 'Петров', 'user', '596d122b57');
+	(5, 'admin', '82902c42095c91510266bdd64a287d3f', 'Роман', 'Пермитин', 'Сергеевич', 'admin', '596d122b57'),
+	(6, 'manager3', '82902c42095c91510266bdd64a287d3f', 'Сергей', 'Петров', 'Олегович', 'user', '596d122b57');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

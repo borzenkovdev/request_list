@@ -68,6 +68,7 @@ class RbacController extends Controller
         return array_merge([
             'request/update',
             'request/delete',
+            'request/close',
         ], $this->userPermissions);
     }
 
@@ -96,6 +97,7 @@ class RbacController extends Controller
         // permission Admin
         $this->createPermission('request/update');
         $this->createPermission('request/delete');
+        $this->createPermission('request/close');
 
         $this->createRoles();
     }
