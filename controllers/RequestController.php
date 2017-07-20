@@ -126,7 +126,7 @@ class RequestController extends Controller
         $model = $this->findModel($id);
         if (Yii::$app->request->post() && $model->load(Yii::$app->request->post())) {
             $model->status = Request::STATUS_INREVIEW;
-            if ( $model->update()) {
+            if (strlen($model->result) > 0 &&  $model->update()) {
                 $modelHistory = new RequestHistory();
                 $modelHistory->request_id = $id;
                 $modelHistory->changed_by = Yii::$app->user->identity->getId();
@@ -134,6 +134,11 @@ class RequestController extends Controller
                 $modelHistory->save();
                 Yii::$app->session->addFlash('info', 'Заявка передана на проверку');
                 return $this->redirect(['index']);
+            }  else {
+                $model->addError('result', 'Поле результат работы не может быть пустым!');
+                print_r($model->getErrors());
+                Yii::$app->session->addFlash('info', $model->errors);
+                $this->refresh();
             }
         }
 
@@ -158,9 +163,15 @@ class RequestController extends Controller
     public function actionCreate()
     {
         $model = new Request();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->addFlash('info', 'Заявка успешно создана!');
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if  ($model->save()) {
+                Yii::$app->session->addFlash('info', 'Заявка успешно создана!');
+                return $this->redirect(['view', 'id' => $model->id]);
+            }  else {
+                print_r($model->getErrors());
+                Yii::$app->session->addFlash('info', $model->getErrors());
+                $this->refresh();
+            }
         }
 
         return $this->render('create', [
@@ -179,10 +190,17 @@ class RequestController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->addFlash('info', 'Заявка успешно обновлена!');
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                Yii::$app->session->addFlash('info', 'Заявка успешно обновлена!');
+                return $this->redirect(['index']);
+            } else {
+                print_r($model->getErrors());
+                Yii::$app->session->addFlash('warning', $model->getErrors());
+                $this->refresh();
+            }
         }
+
         return $this->render('update', [
             'model' => $this->findModel($id),
         ]);

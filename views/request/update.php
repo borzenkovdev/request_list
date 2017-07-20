@@ -11,6 +11,17 @@ $this->params['breadcrumbs'][] = $this->title;
 </p>
 <div class="col-6">
     <h1>Заявка №<?=$model->id;?></h1>
+
+    <?php foreach(Yii::$app->session->getAllFlashes() as $type => $messages): ?>
+        <?php foreach($messages as $message): ?>
+            <?php foreach($message as $mes): ?>
+                <?php foreach($mes as $err): ?>
+                    <div class="alert alert-warning" role="alert"><?=$err?></div>
+                <?php endforeach ?>
+            <?php endforeach ?>
+        <?php endforeach ?>
+    <?php endforeach ?>
+
     <div class="form-group">
         <label>Дата создания</label>
         <div><?=$model->created_at;?></div>

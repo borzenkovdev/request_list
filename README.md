@@ -55,6 +55,15 @@ at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
 2.
 ~~~
 Развернуть базу qiwi  и залить в  неё дамп - /qiwi.sql. Настройки подключения в config/db.php
+
+Пользователи:
+
+admin
+manager
+manager2,
+manager3
+
+пароль от всех учёток 12345
 ~~~
 
 You can then access the application through the following URL:
