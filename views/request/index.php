@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use \yii\helpers\Url;
-
+use  yii\jui\DatePicker;
 $this->title = 'Список заявок';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -43,16 +43,36 @@ $this->params['breadcrumbs'][] = $this->title;
             <label class="col-md-1 control-label" for="v_status">Статус:</label>
             <div class="col-md-3">
                <select id="v_status" value="<?=$_GET['status'];?>" class="form-control" name="status">
+                   <option value="">-</option>
                     <option <?if($_GET['status'] == "new"):?> selected <?endif;?> value="new">Новая</option>
                     <option <?if($_GET['status'] == "inwork"):?> selected <?endif;?> value="inwork">В работе</option>
                     <option <?if($_GET['status'] == "inreview"):?> selected <?endif;?> value="inreview">На проверке</option>
                     <option <?if($_GET['status'] == "closed"):?> selected <?endif;?>  value="closed">Закрыта</option>
                 </select>
             </div>
-            <label class="col-md-1 control-label" for="v_date">Дата:</label>
+
+            <label class="col-md-2 control-label" for="v_date">Дата создания с:</label>
             <div class="col-md-2">
-                <input type="text" placeholder="Дата создания" value="<?=$_GET['date'];?>" name="date" id="v_date" class="form-control">
+                <?
+                echo DatePicker::widget([
+                    'name'  => 'created_from',
+                    'value'  => $_GET['created_from'],
+                    'language' => 'ru',
+                    'dateFormat' => 'yyyy-MM-dd',
+                ]);
+                ?>
             </div>
+          <label class="col-md-1 control-label" for="v_date">До:</label>
+          <div class="col-md-2">
+              <?
+              echo DatePicker::widget([
+                  'name'  => 'created_to',
+                  'value'  => $_GET['created_to'],
+                  'language' => 'ru',
+                  'dateFormat' => 'yyyy-MM-dd',
+              ]);
+              ?>
+          </div>
         </div>
         <div class="button-group col-xs-10 col-xs-offset-0 col-sm-8 col-sm-offset-2 col-md-3 col-md-offset-0">
             <button class="btn btn-primary" value="search" name="search" type="submit">Найти</button>
