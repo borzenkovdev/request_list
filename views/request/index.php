@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use \yii\helpers\Url;
 use  yii\jui\DatePicker;
+use  app\models\User;
+
 $this->title = 'Список заявок';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -14,14 +16,16 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php endforeach ?>
 
 <h1>Список заявок</h1>
-<p>
-    <?= Html::a('Новая заявка', ['create'], ['class' => 'btn btn-success']) ?>
-    <?if($_GET['show'] !== 'unfinished'):?>
-        <?= Html::a('Мои незавершенные заявки', ['', 'show'=>'unfinished'], ['class' => 'link', 'style' => 'margin-left: 15px;']) ?>
-    <?else:?>
-        <?= Html::a('Все заявки', ['index'], ['class' => 'link', 'style' => 'margin-left: 15px;']) ?>
-    <?endif;?>
-</p>
+<?if (Yii::$app->user->identity->getRole() !== User::ROLE_ADMIN):?>
+    <p>
+        <?= Html::a('Новая заявка', ['create'], ['class' => 'btn btn-success']) ?>
+        <?if($_GET['show'] !== 'unfinished'):?>
+            <?= Html::a('Мои незавершенные заявки', ['', 'show'=>'unfinished'], ['class' => 'link', 'style' => 'margin-left: 15px;']) ?>
+        <?else:?>
+            <?= Html::a('Все заявки', ['index'], ['class' => 'link', 'style' => 'margin-left: 15px;']) ?>
+        <?endif;?>
+    </p>
+<?endif;?>
 
 <div id="search_block" class="panel-body">
     <form role="form" class="form-horizontal" method="get" action="">
