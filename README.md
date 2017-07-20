@@ -44,7 +44,6 @@ The minimum requirement by this project template that your Web server supports P
 INSTALLATION
 ------------
 
-
 1.
 ~~~
 php composer.phar install
@@ -55,15 +54,8 @@ at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
 
 2.
 ~~~
-php yii migrate --migrationPath=@yii/rbac/migrations
+Развернуть базу qiwi  и залить в  неё дамп - /qiwi.sql. Настройки подключения в config/db.php
 ~~~
-
-3.
-~~~
-php yii rbac/init
-~~~
-
-
 
 You can then access the application through the following URL:
 ~~~
