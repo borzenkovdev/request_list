@@ -1,39 +1,39 @@
-Система обработки заявок
+Application processing system
 -------------------
-Есть фиксированный набор пользователей и 2 роли: менеджер и супервайзер (у каждого юзера - одна роль). 
+There is a fixed set of users and 2 roles: manager and supervisor (each user has one role).
 
-Заявка проходит линейный жизненный цикл: Создана - В работе - На проверке - Закрыта. 
+An application goes through a linear life cycle: Created - In progress - Under review - Closed.
 
-Любой пользователь может создать заявку. 
+Any user can create a request.
 
-При создании заполняются: название, подробное описание.
+When creating, fill in: name, detailed description.
 
-Взять заявку в работу может любой менеджер. 
+Any manager can accept an application.
 
-Передать на проверку может только тот менеджер, который взял заявку в работу. При передаче на проверку обязательно заполняется описание результата работы. 
+Only the manager who accepted the application can submit it for review. When submitting for inspection, a description of the work result must be filled out.
 
-Закрыть задачу может только супервайзер (любой). 
+Only a supervisor (anyone) can close a task.
 
-Всем пользователям доступен реестр заявок (колонки: название, исполнитель, создатель, дата создания, текущий статус).
+The register of applications is available to all users (columns: title, artist, creator, creation date, current status).
 
-По каждой колонке доступны фильтрация и сортировка. 
+Filtering and sorting are available for each column.
 
-Также для менеджеров есть "быстрый фильтр" - "Мои незавершенные заявки" (т.е. заявки в статусе В работе либо На проверке, где исполнителем является текущий менеджер). 
+There is also a “quick filter” for managers - “My unfinished applications” (i.e. applications in the status In progress or Under review, where the executor is the current manager).
 
-Всем пользователям доступен просмотр заявки (поля: название, исполнитель, создатель, дата создания, текущий статус, подробное описание, результат работы). Супервайзерам также доступен журнал изменения статусов (кто, когда и в какой статус перевел заявку). 
+All users can view the application (fields: title, executor, creator, creation date, current status, detailed description, work result). Supervisors also have access to a log of status changes (who, when and to what status the application was transferred).
 
-Супервайзеры могут удалять заявки, а также редактировать поля заявки: название, описание, результат работы (результат работы - только для статусов На проверке и Закрыта) 
+Supervisors can delete applications, as well as edit application fields: title, description, work result (work result - only for the statuses Under review and Closed)
 
 DIRECTORY STRUCTURE
 -------------------
 
-      assets/             contains assets definition
-      config/             contains application configurationsls
-      controllers/        contains Web controller classes
-      runtime/            contains files generated during runtime
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
+       assets/ contains assets definition
+       config/ contains application configurationsls
+       controllers/ contains Web controller classes
+       runtime/ contains files generated during runtime
+       vendor/ contains dependent 3rd-party packages
+       views/ contains view files for the Web application
+       web/ contains the entry script and Web resources
 
 REQUIREMENTS
 ------------
@@ -54,20 +54,19 @@ at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
 
 2.
 ~~~
-Развернуть базу qiwi  и залить в  неё дамп - /qiwi.sql. Настройки подключения в config/db.php
+Expand the qiwi database and upload a dump to it - /qiwi.sql. Connection settings in config/db.php
 
-Пользователи:
+Users:
 
 admin
 manager
 manager2,
 manager3
 
-пароль от всех учёток 12345
+password for all accounts 12345
 ~~~
 
 You can then access the application through the following URL:
 ~~~
 http://localhost/web/
 ~~~
-
